@@ -1,5 +1,5 @@
 import { db } from '$lib/db';
-import { admins } from '$lib/db/schema';
+import { admins, adminRoleEnum } from '$lib/db/schema';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 
@@ -18,7 +18,7 @@ async function createAdmin() {
       email: 'admin@example.com',
       passwordHash,
       name: 'Wedding Admin',
-      role: 'admin',
+      role: 'ADMIN',
       emailVerified: new Date()
     }).returning();
     

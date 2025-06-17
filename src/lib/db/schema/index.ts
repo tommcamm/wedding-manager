@@ -1,6 +1,6 @@
 // Export all schema definitions
 
-// Tables
+// Enums and Tables
 export * from './invites';
 export * from './guests';
 export * from './admins';
