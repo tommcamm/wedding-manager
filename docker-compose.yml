@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/wedding
+      - REDIS_URL=redis://redis:6379
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET=wedding-manager
+      - SMTP_HOST=${SMTP_HOST:-mailhog}
+      - SMTP_PORT=${SMTP_PORT:-1025}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - SMTP_FROM=${SMTP_FROM:-wedding@example.com}
+    networks:
+      - app-network
+
+  traefik:
+    image: traefik:v2.10
+    restart: unless-stopped
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-certificates:/letsencrypt
+    networks:
+      - app-network
+    labels:
+      - "traefik.enable=true"
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=wedding
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    volumes:
+      - minio-data:/data
+    networks:
+      - app-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.minio-console.rule=Host(`minio.localhost`)"
+      - "traefik.http.routers.minio-console.service=minio-console"
+      - "traefik.http.services.minio-console.loadbalancer.server.port=9001"
+
+  mailhog:
+    image: mailhog/mailhog
+    restart: unless-stopped
+    networks:
+      - app-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailhog.rule=Host(`mail.localhost`)"
+      - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:
+  traefik-certificates:

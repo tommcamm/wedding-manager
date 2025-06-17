@@ -1,16 +1,16 @@
-# Tommy’s Wedding Manager
+# Tommy's Wedding Manager
 
-A multilingual web application for effortlessly managing all invitations, RSVPs, and wedding-day logistics for **Tommy & Sammy’s wedding – June 2026**.
+A multilingual web application for effortlessly managing all invitations, RSVPs, and wedding-day logistics for **Tommy & Sammy's wedding – June 2026**.
 
 ---
 
 ## ✨ Overview
-Tommy’s Wedding Manager provides:
+Tommy's Wedding Manager provides:
 
 1. **Administration interface** – a secure dashboard where wedding planners can control and monitor every aspect of guest management.  
 2. **Invitee interface** – a personalized portal for each guest (or family) enabling them to RSVP **for every person named on the invitation _and_ for any allowed +1s**, specify dietary needs, select gifts from the registry, and more.
 
-The platform is fully localized in **English (default), Italian, and Chinese**, with each invite link or QR code automatically opening in the recipient’s preferred language.
+The platform is fully localized in **English (default), Italian, and Chinese**, with each invite link or QR code automatically opening in the recipient's preferred language.
 
 ---
 
@@ -32,7 +32,7 @@ The platform is fully localized in **English (default), Italian, and Chinese**, 
 | **Personalized Access** | Each invite contains a unique **5-character shortcode** or QR code. |
 | **Per-Person RSVP** | • Accept or decline **individually** for each person already listed on the invitation <br>• Add or remove +1s up to the configured allowance (and within the deadline) |
 | **Dietary Preferences** | Provide allergies or special diets for every attendee, including +1s. |
-| **Gift Registry** | Browse items, mark selections as “taken”, or follow links to e-money boxes for cash gifts. |
+| **Gift Registry** | Browse items, mark selections as "taken", or follow links to e-money boxes for cash gifts. |
 | **Notes to Couple** | Free-text field for guests to leave messages or special requests. |
 | **RSVP Deadline Banner** | Prominent countdown / date banner shows the RSVP deadline; after it passes, the interface switches to view-only with a prompt to **contact the couple for changes**. |
 | **Multilingual UX** | Full interface available in English, Italian, and Chinese based on the invite link. |
@@ -66,6 +66,54 @@ The platform is fully localized in **English (default), Italian, and Chinese**, 
 * **Language indicator** is embedded in each invite URL/QR code (`/invite/ABCDE?lang=it`).  
 * Translatable strings live in resource files (`en.json`, `it.json`, `zh.json`).  
 * Admin dashboard includes an editor for live translation updates.
+
+---
+
+## 🚀 Docker Setup
+
+The application is containerized for easy deployment and development.
+
+### Development Setup
+
+For local development, you can run just the required services (PostgreSQL, Redis, MinIO, MailHog) while running the SvelteKit application directly on your machine:
+
+1. Create a `.env` file from the example:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Start the development dependencies:
+   ```bash
+   docker compose -f docker-compose.dev.yml up -d
+   ```
+
+3. Run the SvelteKit application:
+   ```bash
+   pnpm dev
+   ```
+
+4. Access the application at http://localhost:3000
+
+5. Other services are available at:
+   - MailHog: http://localhost:8025
+   - MinIO Console: http://localhost:9001
+
+### Production Setup
+
+For production deployment, the full stack can be run with Docker Compose:
+
+1. Configure your environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env file with production values
+   ```
+
+2. Start the full stack:
+   ```bash
+   docker compose up -d
+   ```
+
+3. The application and all services will be available through Traefik.
 
 ---
 

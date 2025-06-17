@@ -1,0 +1,48 @@
+# Node modules and dependencies
+node_modules
+.pnpm-store
+
+# Build output
+build
+.svelte-kit
+
+# Development and git files
+.git
+.github
+.gitignore
+.vscode
+.env
+.env.*
+!.env.example
+
+# Docker files
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Test files
+**/*.test.js
+**/*.spec.js
+**/*.test.ts
+**/*.spec.ts
+coverage
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
