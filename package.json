@@ -61,6 +61,8 @@
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
+			"@tailwindcss/oxide",
+			"bcrypt",
 			"esbuild"
 		]
 	},
