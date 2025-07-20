@@ -5,16 +5,17 @@ import { client } from '$lib/db';
 // Initialize database connection
 
 // Handle Paraglide middleware for internationalization
-const handleParaglide: Handle = ({ event, resolve }) =>
-	paraglideMiddleware(event.request, ({ request, locale }) => {
-		event.request = request;
-
+const paraglideHandle: Handle = ({ event, resolve }) =>
+	paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
+		event.request = localizedRequest;
 		return resolve(event, {
-			transformPageChunk: ({ html }) => html.replace('%paraglide.lang%', locale)
+			transformPageChunk: ({ html }) => {
+				return html.replace('%lang%', locale);
+			}
 		});
 	});
 
-export const handle: Handle = handleParaglide;
+export const handle: Handle = paraglideHandle;
 
 /**
  * Handles server shutdown to properly close database connections

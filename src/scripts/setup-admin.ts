@@ -10,7 +10,7 @@ import bcrypt from 'bcrypt';
 async function createAdmin() {
   // Generate a secure password hash
   const passwordHash = await bcrypt.hash('adminpassword', 10);
-  
+
   try {
     // Insert admin record
     const [admin] = await db.insert(admins).values({
@@ -21,7 +21,7 @@ async function createAdmin() {
       role: 'ADMIN',
       emailVerified: new Date()
     }).returning();
-    
+
     console.log('✅ Admin user created successfully:');
     console.log(`   Email: ${admin.email}`);
     console.log('   Password: adminpassword');

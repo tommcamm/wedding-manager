@@ -4,6 +4,9 @@
 	import Button from '$lib/components/common/Button.svelte';
 	import NotificationBanner from '$lib/components/common/NotificationBanner.svelte';
 	import settingsStore from '$lib/stores/mockSettings';
+	import { locales, localizeHref } from '$lib/paraglide/runtime';
+	import { page } from '$app/state';
+	import { m } from '$lib/paraglide/messages';
 	
 	// Subscribe to settings store
 	const settings = settingsStore;
@@ -24,7 +27,7 @@
 	
 	function submitInviteCode() {
 		if (!inviteCode.trim()) {
-			codeError = 'Please enter your invitation code';
+			codeError = ;
 			return;
 		}
 		
@@ -38,14 +41,14 @@
 	<!-- Wedding Countdown Banner -->
 	<NotificationBanner
 		type="info"
-		message="We can't wait to celebrate with you on our special day!"
+		message={"label to change"}
 		showDismiss={false}
 	/>
 	
 	<!-- Wedding Information -->
 	<section class="text-center py-8">
 		<h1 class="text-4xl font-bold mb-4 text-blue-600">Tommy & Sammy</h1>
-		<p class="text-xl mb-2">are getting married on</p>
+		<p class="text-xl mb-2">{"Getting married LABEL"}</p>
 		<p class="text-2xl font-semibold mb-6">{formatDate($settings.wedding.date)}</p>
 		<p class="text-lg mb-8">
 			{$settings.wedding.timeStart} - {$settings.wedding.timeEnd}<br>
@@ -55,16 +58,16 @@
 	</section>
 	
 	<!-- Invitation Code Form -->
-	<Card title="Enter Your Invitation Code" class="max-w-md mx-auto">
+	<Card title={"Invitation code form LABEL"} class="max-w-md mx-auto">
 		<form on:submit|preventDefault={submitInviteCode} class="space-y-4">
 			<div>
 				<label for="invite-code" class="block text-sm font-medium text-gray-700 mb-1">
-					Invitation Code
+					{"label to change"}
 				</label>
 				<input
 					id="invite-code"
 					type="text"
-					placeholder="Enter the 5-character code from your invitation"
+					placeholder={"label to change"}
 					bind:value={inviteCode}
 					class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
 				/>
@@ -74,27 +77,32 @@
 			</div>
 			
 			<div class="flex justify-end">
-				<Button type="submit">View Invitation</Button>
+				<Button type="submit">{"label to change"}</Button>
 			</div>
 		</form>
 	</Card>
 	
 	<!-- Additional Information -->
 	<section class="grid md:grid-cols-2 gap-8 mt-12">
-		<Card title="About Our Wedding">
+		<Card title={"label to change"}>
 			<p class="text-gray-700">
-				Join us for an unforgettable celebration of love and commitment. Our wedding will feature a beautiful ceremony, 
-				followed by dinner, dancing, and memories to last a lifetime.
+				{"label to change"}
 			</p>
 		</Card>
 		
-		<Card title="Questions?">
+		<Card title={"label to change"}>
 			<p class="text-gray-700 mb-4">
-				If you have any questions or need assistance with your RSVP, please don't hesitate to contact us.
+				{"label to change"}
 			</p>
 			<p class="font-medium">
 				Email: <a href="mailto:wedding@example.com" class="text-blue-600 hover:underline">wedding@example.com</a>
 			</p>
 		</Card>
 	</section>
+</div>
+
+<div style="display: none;">
+	{#each locales as locale}
+		<a href={localizeHref(page.url.pathname, { locale })}>{locale}</a>
+	{/each}
 </div>

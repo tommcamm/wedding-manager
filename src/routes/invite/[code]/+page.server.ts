@@ -22,6 +22,7 @@ export const load = ({ params, url }: { params: { code: string }, url: URL }) =>
   
   // Check if invitation is past deadline
   const isPastDeadline = invite.rsvpDeadline < new Date();
+
   
   return {
     invite,

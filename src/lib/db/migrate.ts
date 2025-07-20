@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
-import { env } from '$env/dynamic/private';
+import { DATABASE_URL } from '$env/static/private';
 
 /**
  * This script runs database migrations to ensure the database schema is up-to-date.
@@ -11,7 +11,7 @@ import { env } from '$env/dynamic/private';
  */
 async function main() {
   // Get database URL from environment variable or use default for local development
-  const databaseUrl = env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/wedding';
+  const databaseUrl = DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/wedding';
 
   // For migrations, we need a different client configuration (with max 1 connection)
   const migrationClient = postgres(databaseUrl, { max: 1 });

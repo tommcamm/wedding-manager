@@ -84,6 +84,7 @@ The application is divided into two main sections:
 ## Localization Support
 
 The application supports multiple languages:
+
 - English (en)
 - Italian (it)
 - Chinese (zh)
@@ -93,6 +94,7 @@ Each page detects and displays content in the appropriate language based on the 
 ## Demo Credentials
 
 For demonstration purposes, use:
+
 - Email: admin@example.com
 - Password: password
 
