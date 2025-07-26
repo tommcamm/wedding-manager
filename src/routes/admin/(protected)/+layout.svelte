@@ -11,23 +11,6 @@
 	// Check if we're on the login page
 	const isLoginPage = $derived($page.url.pathname === '/admin/login');
 	
-	// Logout handler
-	function handleLogout() {
-		auth.logout();
-		goto('/admin/login');
-	}
-	
-	// Auth guard
-	$effect(() => {
-		// Skip auth check on login page
-		if (isLoginPage) return;
-		
-		// If not authenticated, redirect to login
-		if (!$auth.isAuthenticated) {
-			goto('/admin/login');
-		}
-	});
-	
 	let { children } = $props();
 </script>
 
@@ -106,7 +89,7 @@
 			</nav>
 			
 			<div class="absolute bottom-0 w-64 p-4 border-t border-gray-700">
-				<Button variant="outline" size="sm" on:click={handleLogout}>
+				<Button variant="outline" size="sm" on:click={() => auth.logout()}>
 					Logout
 				</Button>
 				<a href="/" class="block text-sm text-gray-400 mt-2 hover:text-white">

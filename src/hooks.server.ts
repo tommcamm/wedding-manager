@@ -2,7 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { client } from '$lib/db';
 import { sequence } from '@sveltejs/kit/hooks';
-import { authHandle } from './auth';
+import { handle as authHandle } from './auth';
 
 // Initialize database connection
 

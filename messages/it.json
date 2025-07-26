@@ -142,7 +142,8 @@
 			"formal": "La scadenza RSVP è passata, ma potete ancora rispondere",
 			"casual": "La scadenza RSVP è passata, ma ci farebbe comunque piacere sentirvi",
 			"fun": "Ops! Scadenza passata, ma meglio tardi che mai!"
-		}
+		},
+		"not_found": "Codice invito non trovato "
 	},
 	"rsvp": {
 		"title": "Conferma la Tua Presenza",
