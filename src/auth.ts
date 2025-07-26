@@ -1,11 +1,11 @@
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 
-export const { handle, signIn, signOut } = SvelteKitAuth({
+export const { handle } = SvelteKitAuth({
 	providers: [
 		Credentials({
 			credentials: {
-				username: {},
+				email: {},
 				password: {}
 			},
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
