@@ -7,6 +7,7 @@
 	import { locales, localizeHref } from '$lib/paraglide/runtime';
 	import { page } from '$app/state';
 	import { m } from '$lib/paraglide/messages';
+	import { common_login } from '$lib/paraglide/messages/en';
 	
 	// Subscribe to settings store
 	const settings = settingsStore;
@@ -25,49 +26,37 @@
 	let inviteCode = $state('');
 	let codeError = $state('');
 	
-	function submitInviteCode() {
+	function submitInviteCode(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) {
+		event.preventDefault();
+
 		if (!inviteCode.trim()) {
-			codeError = ;
+			codeError = m['homepage.invitation_code_error']();
 			return;
 		}
-		
-		// In a real app, we would validate this against the database
-		// For now, navigate to the invite page with the code
+	
+
 		goto(`/invite/${inviteCode.toUpperCase()}`);
 	}
 </script>
 
 <div class="space-y-8">
-	<!-- Wedding Countdown Banner -->
-	<NotificationBanner
-		type="info"
-		message={"label to change"}
-		showDismiss={false}
-	/>
 	
-	<!-- Wedding Information -->
 	<section class="text-center py-8">
-		<h1 class="text-4xl font-bold mb-4 text-blue-600">Tommy & Sammy</h1>
-		<p class="text-xl mb-2">{"Getting married LABEL"}</p>
+		<h1 class="text-4xl font-bold mb-4 text-blue-600">{m['homepage.sammytommy']()}</h1>
+		<p class="text-xl mb-2">{m['homepage.getting_married_on']()}</p>
 		<p class="text-2xl font-semibold mb-6">{formatDate($settings.wedding.date)}</p>
-		<p class="text-lg mb-8">
-			{$settings.wedding.timeStart} - {$settings.wedding.timeEnd}<br>
-			{$settings.wedding.venue}<br>
-			{$settings.wedding.address}
-		</p>
 	</section>
 	
-	<!-- Invitation Code Form -->
-	<Card title={"Invitation code form LABEL"} class="max-w-md mx-auto">
-		<form on:submit|preventDefault={submitInviteCode} class="space-y-4">
+	<Card title={m['homepage.view_invitation']()} class="max-w-md mx-auto">
+		<form onsubmit={submitInviteCode} class="space-y-4">
 			<div>
 				<label for="invite-code" class="block text-sm font-medium text-gray-700 mb-1">
-					{"label to change"}
+					{m['homepage.invitation_code_label']()}
 				</label>
 				<input
 					id="invite-code"
 					type="text"
-					placeholder={"label to change"}
+					placeholder={m['common.code']()}
 					bind:value={inviteCode}
 					class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
 				/>
@@ -77,25 +66,24 @@
 			</div>
 			
 			<div class="flex justify-end">
-				<Button type="submit">{"label to change"}</Button>
+				<Button type="submit">{m['common.login']()}</Button>
 			</div>
 		</form>
 	</Card>
 	
 	<!-- Additional Information -->
 	<section class="grid md:grid-cols-2 gap-8 mt-12">
-		<Card title={"label to change"}>
+		<Card title={m['homepage.about_wedding_title']()}>
 			<p class="text-gray-700">
-				{"label to change"}
+				{m['homepage.about_wedding_description']()}
 			</p>
 		</Card>
-		
-		<Card title={"label to change"}>
+		<Card title={m['homepage.questions_title']()} >
 			<p class="text-gray-700 mb-4">
-				{"label to change"}
+				{m['homepage.questions_description']()}
 			</p>
 			<p class="font-medium">
-				Email: <a href="mailto:wedding@example.com" class="text-blue-600 hover:underline">wedding@example.com</a>
+				Email: <a href="mailto:wedding@cammware.com" class="text-blue-600 hover:underline">wedding@cammware.com</a>
 			</p>
 		</Card>
 	</section>

@@ -74,7 +74,8 @@
 		"about_wedding_title": "About Our Wedding",
 		"about_wedding_description": "Join us for an unforgettable celebration as we begin our journey together. We're excited to share this special day with our family and friends.",
 		"questions_title": "Questions?",
-		"questions_description": "If you have any questions about the wedding or need help with your invitation, please don't hesitate to reach out to us."
+		"questions_description": "If you have any questions about the wedding or need help with your invitation, please don't hesitate to reach out to us.",
+		"sammytommy": "Sammy & Tommy"
 	},
 	"admin": {
 		"login_title": "Admin Login",
@@ -213,5 +214,11 @@
 	"footer": {
 		"wedding_title": "Tommy & Sammy Wedding",
 		"privacy_policy": "Privacy Policy"
-	}
+	},
+	"test": {
+		"pippo": {
+			"pluto": "test"
+		}
+	},
+	"arable_fair_ostrich_dine": "Contact us"
 }
