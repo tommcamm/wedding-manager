@@ -8,6 +8,13 @@
       "when": 1750188465789,
       "tag": "0000_high_vector",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1753617639717,
+      "tag": "0001_charming_mauler",
+      "breakpoints": true
     }
   ]
 }

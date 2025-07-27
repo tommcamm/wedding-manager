@@ -1,8 +1,9 @@
 import type { Handle } from '@sveltejs/kit';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { client } from '$lib/db';
+import { svelteKitHandler } from 'better-auth/svelte-kit';
+import { auth } from '$lib/auth';
 import { sequence } from '@sveltejs/kit/hooks';
-import { handle as authHandle } from './auth';
 
 // Initialize database connection
 
@@ -17,7 +18,9 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 		});
 	});
 
-export const handle: Handle = sequence(paraglideHandle, authHandle);
+export const handle: Handle = sequence(paraglideHandle, async ({ event, resolve }) =>
+	svelteKitHandler({ event, resolve, auth })
+);
 
 /**
  * Handles server shutdown to properly close database connections

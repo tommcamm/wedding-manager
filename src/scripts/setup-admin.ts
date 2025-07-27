@@ -1,6 +1,6 @@
 import { db } from '$lib/db';
-import { admins, adminRoleEnum } from '$lib/db/schema';
-import { v4 as uuidv4 } from 'uuid';
+import { user, account } from '$lib/db/schema';
+import { randomBytes } from 'crypto';
 import bcrypt from 'bcrypt';
 
 /**
@@ -8,32 +8,53 @@ import bcrypt from 'bcrypt';
  * Run with: pnpm tsx src/scripts/setup-admin.ts
  */
 async function createAdmin() {
-  // Generate a secure password hash
-  const passwordHash = await bcrypt.hash('adminpassword', 10);
+	const userId = randomBytes(16).toString('hex');
+	const accountId = randomBytes(16).toString('hex');
 
-  try {
-    // Insert admin record
-    const [admin] = await db.insert(admins).values({
-      id: uuidv4(),
-      email: 'admin@example.com',
-      passwordHash,
-      name: 'Wedding Admin',
-      role: 'ADMIN',
-      emailVerified: new Date()
-    }).returning();
+	// Generate a secure password hash
+	const passwordHash = await bcrypt.hash('adminpassword', 10);
 
-    console.log('✅ Admin user created successfully:');
-    console.log(`   Email: ${admin.email}`);
-    console.log('   Password: adminpassword');
-    console.log('   Please change this password after first login!');
-  } catch (error) {
-    console.error('❌ Error creating admin user:', error);
-  }
+	try {
+		// Insert user record
+		const [adminUser] = await db
+			.insert(user)
+			.values({
+				id: userId,
+				name: 'Wedding Admin',
+				email: 'admin@example.com',
+				emailVerified: true,
+				userType: 'ADMIN',
+				adminRole: 'ADMIN',
+				username: 'admin',
+				createdAt: new Date(),
+				updatedAt: new Date()
+			})
+			.returning();
+
+		// Insert account record for password authentication
+		await db.insert(account).values({
+			id: accountId,
+			accountId: userId,
+			providerId: 'credentials',
+			userId: userId,
+			password: passwordHash,
+			createdAt: new Date(),
+			updatedAt: new Date()
+		});
+
+		console.log('✅ Admin user created successfully:');
+		console.log(`   Username: admin`);
+		console.log(`   Email: ${adminUser.email}`);
+		console.log('   Password: adminpassword');
+		console.log('   Please change this password after first login!');
+	} catch (error) {
+		console.error('❌ Error creating admin user:', error);
+	}
 }
 
 // Run the function
 createAdmin()
-  .catch(console.error)
-  .finally(() => {
-    process.exit(0);
-  });
+	.catch(console.error)
+	.finally(() => {
+		process.exit(0);
+	});

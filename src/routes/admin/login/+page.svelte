@@ -1,9 +1,8 @@
 <script lang="ts">
 	import Card from '$lib/components/common/Card.svelte';
 	import Button from '$lib/components/common/Button.svelte';
-	import { signIn } from '@auth/sveltekit/client';
 
-	let email = '';
+	let username = '';
 	let password = '';
 </script>
 
@@ -11,16 +10,21 @@
 	<h1 class="mb-6 text-center text-2xl font-bold">Admin Login</h1>
 
 	<Card>
-		<form class="space-y-4">
+		<form
+			class="space-y-4"
+			on:submit|preventDefault={async () => {
+				console.log('Logging in with:', username, password);
+			}}
+		>
 			<div>
-				<label for="email" class="mb-1 block text-sm font-medium text-gray-700">
-					Email Address
+				<label for="username" class="mb-1 block text-sm font-medium text-gray-700">
+					Username
 				</label>
 				<input
-					id="email"
-					type="email"
-					placeholder="admin@example.com"
-					bind:value={email}
+					id="username"
+					type="text"
+					placeholder="pippo"
+					bind:value={username}
 					class="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
 				/>
 			</div>
@@ -48,7 +52,7 @@
 			</div>
 
 			<div class="w-full">
-				<Button type="submit" on:click={() => signIn('credentials', { email, password })}>
+				<Button type="submit">
 					{'Log In'}
 				</Button>
 			</div>
