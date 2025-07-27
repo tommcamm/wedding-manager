@@ -1,60 +1,38 @@
-import { db } from '$lib/db';
-import { user, account } from '$lib/db/schema';
-import { randomBytes } from 'crypto';
-import bcrypt from 'bcrypt';
-
 /**
- * Script to create an initial admin user
- * Run with: pnpm tsx src/scripts/setup-admin.ts
+ * @deprecated This script is deprecated. Use the new admin seeding system instead.
+ *
+ * RECOMMENDED APPROACH:
+ * 1. Configure admin credentials in your .env file:
+ *    DEFAULT_ADMIN_EMAIL=admin@example.com
+ *    DEFAULT_ADMIN_PASSWORD=your-secure-password
+ *    DEFAULT_ADMIN_NAME=Wedding Administrator
+ *    DEFAULT_ADMIN_USERNAME=admin
+ *
+ * 2. Run database migrations (which automatically creates the admin):
+ *    pnpm db:migrate
+ *
+ * OR manually seed the admin:
+ *    pnpm db:seed-admin
+ *
+ * See docs/ADMIN_SETUP.md for complete documentation.
  */
-async function createAdmin() {
-	const userId = randomBytes(16).toString('hex');
-	const accountId = randomBytes(16).toString('hex');
 
-	// Generate a secure password hash
-	const passwordHash = await bcrypt.hash('adminpassword', 10);
+console.log('⚠️  This script is deprecated!');
+console.log('');
+console.log('Please use the new admin seeding system instead:');
+console.log('');
+console.log('1. Configure admin credentials in your .env file:');
+console.log('   DEFAULT_ADMIN_EMAIL=admin@example.com');
+console.log('   DEFAULT_ADMIN_PASSWORD=your-secure-password');
+console.log('   DEFAULT_ADMIN_NAME=Wedding Administrator');
+console.log('   DEFAULT_ADMIN_USERNAME=admin');
+console.log('');
+console.log('2. Run database migrations (automatically creates admin):');
+console.log('   pnpm db:migrate');
+console.log('');
+console.log('OR manually seed the admin:');
+console.log('   pnpm db:seed-admin');
+console.log('');
+console.log('📖 See docs/ADMIN_SETUP.md for complete documentation.');
 
-	try {
-		// Insert user record
-		const [adminUser] = await db
-			.insert(user)
-			.values({
-				id: userId,
-				name: 'Wedding Admin',
-				email: 'admin@example.com',
-				emailVerified: true,
-				userType: 'ADMIN',
-				adminRole: 'ADMIN',
-				username: 'admin',
-				createdAt: new Date(),
-				updatedAt: new Date()
-			})
-			.returning();
-
-		// Insert account record for password authentication
-		await db.insert(account).values({
-			id: accountId,
-			accountId: userId,
-			providerId: 'credentials',
-			userId: userId,
-			password: passwordHash,
-			createdAt: new Date(),
-			updatedAt: new Date()
-		});
-
-		console.log('✅ Admin user created successfully:');
-		console.log(`   Username: admin`);
-		console.log(`   Email: ${adminUser.email}`);
-		console.log('   Password: adminpassword');
-		console.log('   Please change this password after first login!');
-	} catch (error) {
-		console.error('❌ Error creating admin user:', error);
-	}
-}
-
-// Run the function
-createAdmin()
-	.catch(console.error)
-	.finally(() => {
-		process.exit(0);
-	});
+process.exit(1);

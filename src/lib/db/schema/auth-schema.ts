@@ -16,6 +16,11 @@ export const user = pgTable('user', {
 	// New fields for unified user system
 	userType: userTypeEnum('user_type').notNull(),
 	adminRole: adminRoleEnum('admin_role'), // Nullable, only for admins
+	role: text('role'),
+	banned: boolean('banned'),
+	banReason: text('ban_reason'),
+	banExpires: timestamp('ban_expires'),
+
 	inviteCode: varchar('invite_code', { length: 6 }), // Nullable, only for guests
 	username: text('username').unique(), // Nullable, only for admins
 
@@ -37,7 +42,8 @@ export const session = pgTable('session', {
 	userAgent: text('user_agent'),
 	userId: text('user_id')
 		.notNull()
-		.references(() => user.id, { onDelete: 'cascade' })
+		.references(() => user.id, { onDelete: 'cascade' }),
+	impersonatedBy: text('impersonated_by')
 });
 
 export const account = pgTable('account', {

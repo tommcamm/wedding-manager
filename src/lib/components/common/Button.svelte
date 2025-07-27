@@ -1,16 +1,25 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	type Variant = 'primary' | 'secondary' | 'danger' | 'outline';
 	type Size = 'sm' | 'md' | 'lg';
 
-	const { variant = 'primary', size = 'md', type = 'button', disabled = false } = $props<{
+	const {
+		variant = 'primary',
+		size = 'md',
+		type = 'button',
+		disabled = false,
+		children
+	} = $props<{
 		variant?: Variant;
 		size?: Size;
 		type?: 'button' | 'submit' | 'reset';
 		disabled?: boolean;
+		children: Snippet;
 	}>();
 
 	const variants = {
-		primary: 'bg-blue-600 hover:bg-blue-700 text-white',
+		primary: 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer',
 		secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800',
 		danger: 'bg-red-600 hover:bg-red-700 text-white',
 		outline: 'bg-transparent border border-gray-300 hover:bg-gray-100 text-gray-800'
@@ -29,6 +38,6 @@
 	`);
 </script>
 
-<button type={type} class={classes} disabled={disabled}>
-	<slot />
+<button {type} class={classes} {disabled}>
+	{@render children()}
 </button>

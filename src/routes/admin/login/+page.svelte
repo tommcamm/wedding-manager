@@ -1,9 +1,11 @@
 <script lang="ts">
 	import Card from '$lib/components/common/Card.svelte';
 	import Button from '$lib/components/common/Button.svelte';
+	import { authClient } from '$lib/auth-client';
 
-	let username = '';
+	let email = '';
 	let password = '';
+	let rememberMe = false;
 </script>
 
 <div class="mx-auto max-w-md">
@@ -13,18 +15,21 @@
 		<form
 			class="space-y-4"
 			on:submit|preventDefault={async () => {
-				console.log('Logging in with:', username, password);
+				console.log('Logging in with:', email, password);
+				const results = await authClient.signIn.email({
+					email,
+					password,
+					rememberMe
+				});
 			}}
 		>
 			<div>
-				<label for="username" class="mb-1 block text-sm font-medium text-gray-700">
-					Username
-				</label>
+				<label for="email" class="mb-1 block text-sm font-medium text-gray-700"> Email </label>
 				<input
-					id="username"
+					id="email"
 					type="text"
 					placeholder="pippo"
-					bind:value={username}
+					bind:value={email}
 					class="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
 				/>
 			</div>
@@ -47,6 +52,7 @@
 					id="remember-me"
 					type="checkbox"
 					class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+					bind:checked={rememberMe}
 				/>
 				<label for="remember-me" class="ml-2 block text-sm text-gray-700"> Remember me </label>
 			</div>
