@@ -3,8 +3,8 @@ import postgres from 'postgres';
 import { user, account } from '../lib/db/schema/auth-schema.js';
 import { eq } from 'drizzle-orm';
 import { randomBytes } from 'crypto';
-import bcrypt from 'bcrypt';
 import 'dotenv/config';
+import { hashPassword } from 'better-auth/crypto';
 
 // Create database connection
 const databaseUrl =
@@ -41,8 +41,8 @@ async function seedAdmin() {
 		const userId = randomBytes(16).toString('hex');
 		const accountId = randomBytes(16).toString('hex');
 
-		// Hash password using bcrypt
-		const passwordHash = await bcrypt.hash(adminPassword, 12);
+		// Hash password using scr
+		const passwordHash = await hashPassword(adminPassword);
 
 		// Insert user record
 		await db
