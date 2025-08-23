@@ -4,6 +4,7 @@ import { client } from '$lib/db';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
 import { auth } from '$lib/auth';
 import { sequence } from '@sveltejs/kit/hooks';
+import { env } from '$env/dynamic/private';
 
 // Initialize database connection
 
@@ -18,9 +19,12 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 		});
 	});
 
-export const handle: Handle = sequence(paraglideHandle, async ({ event, resolve }) =>
-	svelteKitHandler({ event, resolve, auth })
-);
+export const handle: Handle = sequence(paraglideHandle, async ({ event, resolve }) => {
+	// Add preview mode flag to locals
+	event.locals.previewMode = env.PREVIEW_MODE === 'true';
+
+	return svelteKitHandler({ event, resolve, auth });
+});
 
 /**
  * Handles server shutdown to properly close database connections
